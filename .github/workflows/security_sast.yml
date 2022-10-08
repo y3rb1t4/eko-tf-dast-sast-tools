@@ -1,0 +1,98 @@
+name: security_sast
+
+on:
+  workflow_call:
+    secrets:
+      SNYK_TOKEN:
+        required: true    
+
+jobs:
+  gitleaks:
+    name: 🐛 Gitleaks Secret Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: |
+          wget https://github.com/zricethezav/gitleaks/releases/download/v8.13.0/gitleaks_8.13.0_linux_x64.tar.gz && \
+          tar -xzf gitleaks_8.13.0_linux_x64.tar.gz && \
+          sudo install gitleaks /usr/bin && \
+          gitleaks detect --report-format sarif --report-path gitleaks.report
+        continue-on-error: true          
+      - name: Echo report
+        run: cat gitleaks.report
+      - name: Upload SARIF file for GitHub Advanced Security Dashboard
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: gitleaks.report   
+
+  semgrep:
+    name: 🐛 Semgrep Scan
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Run semgrep security scanner
+        continue-on-error: true
+        run: |
+          cat << 'EOF' | bash
+              semgrep ci --config=auto --sarif --output=semgrep.sarif --max-target-bytes=2MB
+              EXIT_CODE=$?
+              if [ "$EXIT_CODE" = "0" ] || [ "$EXIT_CODE" = "1" ]
+              then
+                exit 0
+              else
+                exit $EXIT_CODE
+              fi
+          EOF
+      - name: Upload SARIF file for GitHub Advanced Security Dashboard
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: semgrep.sarif 
+
+  snyk-code-sca:
+    name: 🐛 Snyk Code Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: >
+            --severity-threshold=high
+            --all-projects
+            --sarif-file-output=snyk-code.sarif
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk-code.sarif  
+
+#scan iac
+  checkov:
+    name: 🐛 Checkov Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Checkov
+        uses: bridgecrewio/checkov-action@master
+        continue-on-error: true 
+        with:
+          directory: .
+          framework: all
+          quiet: true
+          soft_fail: true
+          download_external_modules: true
+          log_level: INFO # One of: INFO, WARNING, DEBUG
+          output_format: sarif
+      - name: Upload Sarif file
+        if: always()
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: results.sarif  

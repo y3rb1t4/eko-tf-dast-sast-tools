@@ -1,0 +1,71 @@
+openapi: "3.0.1"
+info:
+  title: "http-crud-tutorial-api-dev"
+  version: "2022-10-04 22:29:29UTC"
+servers:
+- url: "https://api.295devops.com/dev/{basePath}"
+  variables:
+    basePath:
+      default: ""
+paths:
+  /items/{id}:
+    get:
+      responses:
+        default:
+          description: "Default response for GET /items/{id}"
+      x-amazon-apigateway-integration:
+        payloadFormatVersion: "2.0"
+        type: "aws_proxy"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:459137896070:function:http-crud-tutorial-dev/invocations"
+        connectionType: "INTERNET"
+    delete:
+      responses:
+        default:
+          description: "Default response for DELETE /items/{id}"
+      x-amazon-apigateway-integration:
+        payloadFormatVersion: "2.0"
+        type: "aws_proxy"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:459137896070:function:http-crud-tutorial-dev/invocations"
+        connectionType: "INTERNET"
+    parameters:
+    - name: "id"
+      in: "path"
+      description: "Generated path parameter for id"
+      required: true
+      schema:
+        type: "string"
+  /:
+    get:
+      responses:
+        default:
+          description: "Default response for GET /"
+      x-amazon-apigateway-integration:
+        payloadFormatVersion: "2.0"
+        type: "aws_proxy"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:459137896070:function:http-crud-tutorial-dev/invocations"
+        connectionType: "INTERNET"
+  /items:
+    get:
+      responses:
+        default:
+          description: "Default response for GET /items"
+      x-amazon-apigateway-integration:
+        payloadFormatVersion: "2.0"
+        type: "aws_proxy"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:459137896070:function:http-crud-tutorial-dev/invocations"
+        connectionType: "INTERNET"
+    put:
+      responses:
+        default:
+          description: "Default response for PUT /items"
+      x-amazon-apigateway-integration:
+        payloadFormatVersion: "2.0"
+        type: "aws_proxy"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:459137896070:function:http-crud-tutorial-dev/invocations"
+        connectionType: "INTERNET"
+x-amazon-apigateway-importexport-version: "1.0"

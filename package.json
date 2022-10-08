@@ -1,0 +1,13 @@
+{
+  "name": "lamnda-tf-gitlab",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pack": "zip -jr lambda-tf-gitlab src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "lint": "echo \"Error: no test specified\" && exit 0"
+  },
+  "author": "@RoxsRoss",
+  "license": "ISC"
+}

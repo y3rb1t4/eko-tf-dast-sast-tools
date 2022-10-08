@@ -1,0 +1,30 @@
+name: security_dast
+
+on:
+  workflow_call:
+    secrets:
+      GITHUBTOKEN:
+        required: true
+
+jobs:
+  zap_dast_scan:
+    if: ${{ github.ref == 'refs/heads/develop' }}
+    name: 🔍 Owasp Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Log current directory
+      run: echo ${pwd}
+    - name: Pull Docker image for ZAP
+      run: docker pull owasp/zap2docker-weekly
+    - name: Run api scan
+      run: docker run -v $(pwd):/zap/wrk/ --user root -t owasp/zap2docker-weekly zap-api-scan.py -t openapiv3.yaml -f openapi -r zapreport.html -d
+      continue-on-error: true 
+    - uses: actions/upload-artifact@v2
+      name: upload ZAP report
+      with:
+        name: ZAPreport
+        path: zapreport.html
+        

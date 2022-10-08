@@ -1,0 +1,111 @@
+
+name: Deploy Terraform
+
+on:
+  workflow_call:
+    secrets:
+      GITHUBTOKEN:
+        required: true
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+
+env:
+  BUCKET: iac-tf-bucket-s3
+  PACKAGE: lambda-tf-gitlab.zip
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    name: Init
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14.x'
+    - run: npm install
+    - name: Package
+      run: |
+          npm run pack  
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+          
+    - name: upload code to s3 to develop
+      if: ${{ github.ref == 'refs/heads/develop' }}
+      run: aws s3 cp $PACKAGE  "s3://$BUCKET/$ENV/$PACKAGE"
+      env:
+        ENV: dev      
+    
+    - name: upload code to s3 to master
+      if: ${{ github.ref == 'refs/heads/master' }}
+      run: aws s3 cp $PACKAGE "s3://$BUCKET/$ENV/$PACKAGE" 
+      env:
+        ENV: prod  
+  
+  deploy_to_dev:
+    runs-on: ubuntu-latest
+    name: 🛳 Deploy Tf to Develop
+    if: ${{ github.ref == 'refs/heads/develop' }}
+    needs: init
+    environment: develop
+    defaults:
+      run:
+        working-directory: ./terraform
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.2.9
+
+    - name: Terraform 
+      run: |
+        rm -rf .terraform
+        terraform init
+        terraform validate
+        terraform workspace select $ENV || terraform workspace new $ENV
+        terraform plan -var-file tfvars/$ENV.tfvars -out plan.out
+        terraform apply -var-file tfvars/$ENV.tfvars -auto-approve
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        ENV: dev  
+
+  deploy_to_prod:
+    runs-on: ubuntu-latest
+    name: 🚀 Deploy Tf to Productions
+    if: ${{ github.ref == 'refs/heads/master' }}
+    needs: init
+    environment: master
+    defaults:
+      run:
+        working-directory: ./terraform
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.2.9
+
+    - name: Terraform 
+      run: |
+        rm -rf .terraform
+        terraform init
+        terraform validate
+        terraform workspace select $ENV || terraform workspace new $ENV
+        terraform plan -var-file tfvars/$ENV.tfvars -out plan.out
+        terraform apply -var-file tfvars/$ENV.tfvars -auto-approve
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        ENV: prod  
