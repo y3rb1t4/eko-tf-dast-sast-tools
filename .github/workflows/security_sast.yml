@@ -57,9 +57,9 @@ jobs:
     name: 🐛 Snyk Code Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
+        uses: snyk/actions/node@main
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -73,7 +73,7 @@ jobs:
         with:
           sarif_file: snyk-code.sarif  
 
-#scan iac
+#scan iac (escanea infra como codigo- docker file - yml - manifiesto kubernets)
   checkov:
     name: 🐛 Checkov Scan
     runs-on: ubuntu-latest

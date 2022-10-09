@@ -15,7 +15,7 @@ on:
 
   push:
     branches:   
-      - master
+      - main
       - develop 
 
 jobs:
@@ -35,6 +35,6 @@ jobs:
 
   security_dast:
     uses: ./.github/workflows/security_dast.yml
-    needs: deploy_to_aws
+    needs: deploy_to_aws ## Para que corra DAST necesita tener Deploy AWS
     secrets:
       GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}     
