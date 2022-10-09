@@ -17,7 +17,7 @@ paths:
         payloadFormatVersion: "2.0"
         type: "aws_proxy"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:459137896070:function:http-crud-tutorial-dev/invocations"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:748829426227:function:http-crud-tutorial-dev/invocations"
         connectionType: "INTERNET"
     delete:
       responses:
@@ -27,7 +27,7 @@ paths:
         payloadFormatVersion: "2.0"
         type: "aws_proxy"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:459137896070:function:http-crud-tutorial-dev/invocations"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:748829426227:function:http-crud-tutorial-dev/invocations"
         connectionType: "INTERNET"
     parameters:
       - name: "id"
@@ -45,7 +45,7 @@ paths:
         payloadFormatVersion: "2.0"
         type: "aws_proxy"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:459137896070:function:http-crud-tutorial-dev/invocations"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:748829426227:function:http-crud-tutorial-dev/invocations"
         connectionType: "INTERNET"
   /items:
     get:
@@ -56,7 +56,7 @@ paths:
         payloadFormatVersion: "2.0"
         type: "aws_proxy"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:459137896070:function:http-crud-tutorial-dev/invocations"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:748829426227:function:http-crud-tutorial-dev/invocations"
         connectionType: "INTERNET"
     put:
       responses:
@@ -66,6 +66,6 @@ paths:
         payloadFormatVersion: "2.0"
         type: "aws_proxy"
         httpMethod: "POST"
-        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:459137896070:function:http-crud-tutorial-dev/invocations"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:748829426227:function:http-crud-tutorial-dev/invocations"
         connectionType: "INTERNET"
 x-amazon-apigateway-importexport-version: "1.0"
