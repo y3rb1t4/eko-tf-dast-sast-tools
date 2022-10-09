@@ -46,7 +46,7 @@ variable "repo_url" {
 variable "domain" {
   description = "dominio"
   type        = string
-  default     = "api.295devops.com"
+  default     = "api.296devops.com"
 }
  
 variable "read_capacity" {
