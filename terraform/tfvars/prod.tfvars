@@ -6,5 +6,5 @@ workspace          = "prod"
 domain             = "api.295devops.com"
 repo_url           = "https://gitlab.com/training-cloud/lambda-tf-gitlab.git"
 #AWS_account 
-aws_account_id     = "459137896070"
+aws_account_id     = "748829426227"
 aws_role_name      = "training-gitlab-deploy-role"
