@@ -12,8 +12,8 @@ on:
         required: true
 
 env:
-  BUCKET: iac-tf-bucket-s3
-  PACKAGE: lambda-tf-gitlab.zip
+  BUCKET: iac-tf-bucket-s34
+  PACKAGE: lambda-tf-gitlab2.zip
 
 jobs:
   init:

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pack": "zip -jr lambda-tf-gitlab src/index.js",
+    "pack": "zip -jr lambda-tf-gitlab2 src/index.js",
     "test": "echo \"Error: no test specified\" && exit 0",
     "lint": "echo \"Error: no test specified\" && exit 0"
   },
