@@ -3,10 +3,10 @@ info:
   title: "http-crud-tutorial-api-dev"
   version: "2022-10-04 22:29:29UTC"
 servers:
-- url: "https://api.295devops.com/dev/{basePath}"
-  variables:
-    basePath:
-      default: ""
+  - url: "https://api.296devops.com/dev/{basePath}"
+    variables:
+      basePath:
+        default: ""
 paths:
   /items/{id}:
     get:
@@ -30,12 +30,12 @@ paths:
         uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:459137896070:function:http-crud-tutorial-dev/invocations"
         connectionType: "INTERNET"
     parameters:
-    - name: "id"
-      in: "path"
-      description: "Generated path parameter for id"
-      required: true
-      schema:
-        type: "string"
+      - name: "id"
+        in: "path"
+        description: "Generated path parameter for id"
+        required: true
+        schema:
+          type: "string"
   /:
     get:
       responses:
