@@ -29,7 +29,7 @@ variable "aws_region" {
 variable "lambda_package" {
   description = "Path archivo ZIP a ser desplegado en AWS"
   type = string
-  default = "lambda-tf-gitlab.zip"
+  default = "lambda-tf-gitlab2.zip"
 }
 
 variable "bucket"{
